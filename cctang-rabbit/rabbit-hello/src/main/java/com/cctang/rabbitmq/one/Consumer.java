@@ -1,8 +1,8 @@
 package com.cctang.rabbitmq.one;
 
+import com.cctang.rabbitmq.utils.RabbitMqUtils;
 import com.rabbitmq.client.*;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
@@ -17,17 +17,7 @@ public class Consumer {
     public static final String QUEUE_NAME = "ZKHTYJ";
     // 接受消息
     public static void main(String[] args) throws IOException, TimeoutException {
-        ConnectionFactory factory = new ConnectionFactory();
-        // 工厂IP  链接rabbitmq 的队列
-        factory.setHost("localhost");
-        factory.setPort(5672);
-        factory.setUsername("guest");
-        factory.setPassword("guest");
-
-        // 创建连接
-        Connection connection = factory.newConnection();
-        // 创建信道
-        Channel channel = connection.createChannel();
+        Channel channel = RabbitMqUtils.getChannel();
 
 
         // 申明接受消息时的回调
