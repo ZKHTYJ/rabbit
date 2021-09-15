@@ -28,28 +28,22 @@ public class ConfimMessage { // 批量发消息的个数
         Channel channel = RabbitMqUtils.getChannel();
         // 队列的声明
         String ququeName = UUID.randomUUID().toString();
-        /**
-         * 1. 单个确认
-         * 发布1000个单独确认个消息，耗时216ms
-         * 缺点： 发布慢
-         * */
-        // ConfimMessage.publishMessageIndividually(channel,ququeName);
-        /**
-         * 2. 批量确认
-         * 发布1000个单独确认个消息，耗时46ms
-         * 缺点： 无法定位哪个消息发送出问题
-         * */
-        // ConfimMessage.muitlMessage(channel,ququeName);
-        /**
-         * 3. 异步批量确认
-         * 发布1000个异步批量确认个消息，耗时39ms
-         * 性价比最高
-         * */
+        // 单个确认
+        //ConfimMessage.publishMessageIndividually(channel,ququeName);
+
+        // 批量确认
+        //ConfimMessage.muitlMessage(channel,ququeName);
+
+        // 异步批量确认
         ConfimMessage.syncMutilMessage(channel,ququeName);
 
     }
 
-    // 单个确认
+    /**
+     * 1. 单个确认
+     * 发布1000个单独确认个消息，耗时216ms   笔记本503ms
+     * 缺点： 发布慢
+     * */
     public static void publishMessageIndividually(Channel channel, String ququeName) throws Exception{
 
 
@@ -69,7 +63,11 @@ public class ConfimMessage { // 批量发消息的个数
 
 
 
-    // 批量确认
+    /**
+     * 2. 批量确认
+     * 发布1000个单独确认个消息，耗时46ms  笔记本102ms
+     * 缺点： 无法定位哪个消息发送出问题
+     * */
     public static void muitlMessage(Channel channel, String ququeName) throws Exception{
         long begin = ConfimMessage.publicMethod(channel, ququeName);
         // 批量确认消息大小
@@ -86,9 +84,12 @@ public class ConfimMessage { // 批量发消息的个数
         ConfimMessage.cutTime(begin,1);
     }
 
-    // 异步批量确认
+    /**
+     * 3. 异步批量确认
+     * 发布1000个异步批量确认个消息，耗时39ms
+     * 性价比最高
+     * */
     public static void syncMutilMessage(Channel channel, String ququeName) throws Exception{
-        long begin = ConfimMessage.publicMethod(channel, ququeName);
 
         /**
          * 线程安全有序的一个哈希表 适用于高并发场景下
@@ -123,8 +124,10 @@ public class ConfimMessage { // 批量发消息的个数
 
             System.out.println("未确认的消息是："+ message + "：：：未确认的消息tag：" + deliverTag);
         };
-        // 准备消息监听器 监听哪些消息成功 哪些失败
+        //  准备消息监听器 监听哪些消息成功 哪些失败
         channel.addConfirmListener(ackCallback,nackCallback); // 异步通知
+        long begin = ConfimMessage.publicMethod(channel, ququeName);
+
         // 批量发送消息
         for (int i = 0; i < MESSAGE_COUNT; i++) {
             ConfimMessage.sendMessageMutil(channel, ququeName,i,2,outstandingConfirms);
@@ -162,6 +165,7 @@ public class ConfimMessage { // 批量发消息的个数
                 break;
             case 2 :
                 System.out.println("发布"+MESSAGE_COUNT+"个异步批量确认个消息，耗时" + (end-begin) + "ms");
+                break;
         }
 
     }
@@ -170,6 +174,7 @@ public class ConfimMessage { // 批量发消息的个数
         String message = i+ "";
         channel.basicPublish("",ququeName,null,message.getBytes());
         if(type == 2) {
+            // A 将消息全部存储
             outstandingConfirms.put(channel.getNextPublishSeqNo(),message);
 
         }
