@@ -4,17 +4,16 @@ import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 /**
- * @program: rabbit
- * @description: 死信消费者
- * @author: cctang
- * @create: 2021-09-16 16:41
- **/
+ * @author cctang
+ * @version 1.0
+ * @date 2021/9/16 21:31
+ * @description 死信消费者
+ */
 @Slf4j
 @Service
 public class DeadletterQueueConsumer {

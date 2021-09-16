@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 
 /**
- * @program: rabbit
- * @description: 延迟队列配置 TTL队列
- * @author: cctang
- * @create: 2021-09-16 15:31
- **/
+ * @author cctang
+ * @version 1.0
+ * @date 2021/9/16 21:29
+ * @description 延迟队列配置 TTL队列
+ */
 @Configuration
 public class TtlQuqueConfig {
     // 普通交换机
@@ -92,3 +92,4 @@ public class TtlQuqueConfig {
 
 
 }
+

@@ -4,11 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @program: rabbit
- * @description: 启动类
- * @author: cctang
- * @create: 2021-09-16 14:35
- **/
+ * @author cctang
+ * @version 1.0
+ * @date 2021/9/16 21:33
+ * @description
+ */
 @SpringBootApplication
 public class SpringBootRabbitMain {
     public static void main(String[] args) {
