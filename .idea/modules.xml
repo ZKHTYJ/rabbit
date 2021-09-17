@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/rabbit.iml" filepath="$PROJECT_DIR$/.idea/rabbit.iml" />
       <module fileurl="file://$PROJECT_DIR$/rabbit-hello/rabbit-hello.iml" filepath="$PROJECT_DIR$/rabbit-hello/rabbit-hello.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot-rabbit/springboot-rabbit.iml" filepath="$PROJECT_DIR$/springboot-rabbit/springboot-rabbit.iml" />
     </modules>
