@@ -35,6 +35,7 @@
 使用插件后：
         http://localhost:8080/ttl/sendDelayMsg/baby1/10000
         http://localhost:8080/ttl/sendDelayMsg/baby2/1000
+       达到预期效果 1s先被消费
 
 
 
