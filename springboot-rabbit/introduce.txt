@@ -1,0 +1,43 @@
+本Moudle写了关于springboot整合rabbitMQ
+
+延迟队列的实战
+
+发送消息到普通队列 带延迟
+
+队列结构如图  延迟队列1.jpg ------>picture文件夹下
+
+
+        延迟队列 QA(延迟10s) QB(延迟40s) ，死信队列QD
+        延迟队列QC为优化后的延迟队列
+                优化点： 可以随意调整延迟时间
+                缺  点： 同时发两条消息 一条10s 一条1s,顺序消费
+
+        死信交换机Y 普通交换机X
+        关系：  QA QB QC 绑定X routingkey:XA XB XC  与死信交换机的routingkey： YD
+
+延迟队列QC致命缺陷：
+    操作复现：同时访问：http://localhost:8080/ttl/sendExpireMsg/呵呵呵/10000 （先）
+                       http://localhost:8080/ttl/sendExpireMsg/哈哈哈/1000 （后）
+    期望结果：1s的先被消费 接着到10s的
+    实际结果：10s的先被消费 接着才消费1s的
+
+    造成原因： RabbitMQ 只会检查第一个消息是否过期，如果过期则丢失到死信队列，如果第一个消息的延迟
+               时长很长，而第二个消息延迟时长很短，则第二个消息并不会优先得到执行
+
+    解决方案：安装延迟队列插件 rabbitmq_delayed_message_exchange
+
+    结构如图：延迟插件队列.jpg ------>picture文件夹下
+
+    下载地址：https://www.rabbitmq.com/community-plugins.html
+    使用方法： 激活插件rabbitmq-plugins enable rabbitmq_delayed_message_exchange
+
+
+使用插件后：
+        http://localhost:8080/ttl/sendDelayMsg/baby1/10000
+        http://localhost:8080/ttl/sendDelayMsg/baby2/1000
+
+
+
+
+
+

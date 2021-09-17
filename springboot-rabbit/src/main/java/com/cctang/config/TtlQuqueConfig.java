@@ -11,7 +11,7 @@ import java.util.HashMap;
  * @author cctang
  * @version 1.0
  * @date 2021/9/16 21:29
- * @description 延迟队列配置 TTL队列
+ * @description 延迟队列配置 TTL队列  目前此demo未用延迟队列插件，造成的问题在introduce中已介绍
  */
 @Configuration
 public class TtlQuqueConfig {
@@ -22,6 +22,8 @@ public class TtlQuqueConfig {
     //普通队列
     public static final String QUEUE_A="QA";
     public static final String QUEUE_B="QB";
+    // 定义QC队列
+    public static final String QUEUE_C="QC";
     //死信队列
     public static final String DEAD_LETTER_QUEUE="QD";
 
@@ -64,6 +66,16 @@ public class TtlQuqueConfig {
 
         return QueueBuilder.durable(QUEUE_B).withArguments(arguments).build();
     }
+    //申明队列
+    @Bean("queueC")
+    public Queue queueC(){
+        HashMap<String, Object> arguments = new HashMap<>();
+        // 设置死信交换机
+        arguments.put("x-dead-letter-exchange",Y_DEAD__EXCHANGE);
+        // 设置死信routingKey
+        arguments.put("x-dead-letter-routing-key","YD");
+        return QueueBuilder.durable(QUEUE_C).withArguments(arguments).build();
+    }
 
     // 申明死信队列
     @Bean("ququeD")
@@ -82,6 +94,12 @@ public class TtlQuqueConfig {
     public Binding ququeBBindX(@Qualifier("queueB") Queue queueB,
                                @Qualifier("xExchange") DirectExchange xExchange){
         return BindingBuilder.bind(queueB).to(xExchange).with("XB");
+    }
+
+    @Bean
+    public Binding ququeCBindX(@Qualifier("queueC") Queue queueC,
+                               @Qualifier("xExchange") DirectExchange xExchange){
+        return BindingBuilder.bind(queueC).to(xExchange).with("XC");
     }
 
     @Bean

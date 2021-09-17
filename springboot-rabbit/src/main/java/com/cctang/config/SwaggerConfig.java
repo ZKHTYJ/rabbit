@@ -1,6 +1,7 @@
 package com.cctang.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -13,6 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @date 2021/9/16 21:39
  * @description
  */
+@Configuration
 public class SwaggerConfig {
 
     @Bean
